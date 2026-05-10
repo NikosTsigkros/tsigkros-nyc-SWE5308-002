@@ -1,0 +1,56 @@
+# Local full stack: MySQL + Django API + React (nginx proxies /api → backend)
+# DigitalOcean App Platform: use Managed MySQL + separate Web Services, or this compose on a Droplet.
+
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-inventory_root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-inventory_db}
+    ports:
+      - "${MYSQL_PUBLISH_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -uroot -p"$$MYSQL_ROOT_PASSWORD" || exit 1']
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-change-me-in-production}
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-0}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,backend}
+      MYSQL_HOST: db
+      MYSQL_PORT: '3306'
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-inventory_db}
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD:-inventory_root}
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-2}
+    expose:
+      - '8000'
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: /api
+    restart: unless-stopped
+    ports:
+      - '${FRONTEND_PORT:-8080}:80'
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

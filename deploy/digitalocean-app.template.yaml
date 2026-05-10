@@ -1,0 +1,46 @@
+# DigitalOcean App Platform — example spec (API only, Dockerfile from this repo).
+# Use: Apps → Create → GitHub repo → Edit spec, or `doctl apps create --spec this-file.yaml`
+# after replacing placeholders and wiring a Managed MySQL instance in the DO UI.
+#
+# Typical setup:
+# - Add a Managed MySQL database component to the app.
+# - In the api service, bind runtime env vars from the database (UI: "Bind" HOST, PORT, etc.).
+# - Set DJANGO_SECRET_KEY (SECRET), ALLOWED_HOSTS (your app hostname), CORS_ALLOWED_ORIGINS (SPA URL).
+# - Frontend: either deploy this repo’s frontend/ as a Static Site with build command `npm ci && npm run build`
+#   and env VITE_API_URL=https://<your-api-host>/api, OR run docker-compose on a Droplet for an all-in-one demo.
+
+name: smart-inventory-api
+region: fra
+
+services:
+  - name: api
+    github:
+      repo: YOUR_GITHUB_ORG/YOUR_REPO_NAME
+      branch: main
+      deploy_on_push: true
+    dockerfile_path: backend/Dockerfile
+    http_port: 8000
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+    envs:
+      - key: DJANGO_DEBUG
+        value: '0'
+      - key: ALLOWED_HOSTS
+        value: localhost,127.0.0.1
+      - key: DJANGO_SECRET_KEY
+        value: CHANGE_ME_USE_SECRET_TYPE_IN_UI
+      - key: MYSQL_HOST
+        value: REPLACE_WITH_DB_HOST_FROM_UI
+      - key: MYSQL_PORT
+        value: '25060'
+      - key: MYSQL_DATABASE
+        value: defaultdb
+      - key: MYSQL_USER
+        value: doadmin
+      - key: MYSQL_PASSWORD
+        value: REPLACE_WITH_DB_PASSWORD_SECRET
+        type: SECRET
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://your-frontend-url.example.com
