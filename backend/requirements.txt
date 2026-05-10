@@ -1,0 +1,6 @@
+django>=6.0,<7
+djangorestframework>=3.15
+djangorestframework-simplejwt>=5.3
+django-cors-headers>=4.6
+# mysqlclient: install MySQL client libs and pkg-config first, e.g. on macOS:
+#   brew install pkg-config mysql && pip install mysqlclient
