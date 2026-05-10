@@ -1,5 +1,5 @@
-# Local full stack: MySQL + Django API + React (nginx proxies /api → backend)
-# DigitalOcean App Platform: use Managed MySQL + separate Web Services, or this compose on a Droplet.
+# Full stack locally: MySQL + Django + Nginx (reverse proxy + static SPA).
+# Open http://localhost:${FRONTEND_PORT:-8080} — only Nginx is published; /api → Django.
 
 services:
   db:
@@ -27,7 +27,7 @@ services:
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-change-me-in-production}
       DJANGO_DEBUG: ${DJANGO_DEBUG:-0}
-      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,backend}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,backend,nginx}
       MYSQL_HOST: db
       MYSQL_PORT: '3306'
       MYSQL_DATABASE: ${MYSQL_DATABASE:-inventory_db}
@@ -40,12 +40,12 @@ services:
       db:
         condition: service_healthy
 
-  frontend:
+  nginx:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: nginx/Dockerfile
       args:
-        VITE_API_URL: /api
+        VITE_API_URL: ${VITE_API_URL:-/api}
     restart: unless-stopped
     ports:
       - '${FRONTEND_PORT:-8080}:80'

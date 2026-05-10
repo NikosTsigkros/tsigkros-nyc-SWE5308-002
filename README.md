@@ -30,6 +30,22 @@ The application allows authenticated users to manage inventory products through 
 
 ---
 
+## Run locally (Docker Compose)
+
+From the repository root:
+
+```bash
+docker compose up --build
+```
+
+- **App (browser):** [http://localhost:8080](http://localhost:8080) (override with `FRONTEND_PORT`)
+- **Nginx** serves the built React app and proxies **`/api/`** to Django on the internal network.
+- **MySQL** is exposed on **`3306`** by default (`MYSQL_PUBLISH_PORT` to change).
+
+Optional: `DJANGO_DEBUG=1`, `ALLOWED_HOSTS`, and `VITE_API_URL` (build arg for the SPA) can be set in the environment or a `.env` file next to `docker-compose.yml`.
+
+---
+
 ## Deployment (DigitalOcean App Platform)
 
 Step-by-step notes for a **backend** Web Service (Dockerfile) and **frontend** Static Site or Web Service are in [deploy/DIGITALOCEAN.md](deploy/DIGITALOCEAN.md). The repository root [`.gitignore`](.gitignore) excludes `backend/venv/` so Python buildpacks do not fail; use the Dockerfile-based backend deploy for production.

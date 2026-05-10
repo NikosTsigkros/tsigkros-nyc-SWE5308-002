@@ -1,4 +1,4 @@
-# React SPA + nginx reverse proxy to Django API (same stack as docker-compose)
+# Standalone: React build + Nginx (optional). Full compose stack uses repo nginx/ + docker-compose.yml.
 FROM node:22-alpine AS build
 
 WORKDIR /app
