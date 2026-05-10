@@ -1,4 +1,7 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Products from './pages/Products';
 
 function App() {
     return (
@@ -10,9 +13,9 @@ function App() {
             </nav>
 
             <Routes>
-                <Route path='/' element={<p>Products</p>} />
-                <Route path='/login' element={<p>Login</p>} />
-                <Route path='/register' element={<p>Register</p>} />
+                <Route path='/' element={<Products />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/register' element={<Register />} />
             </Routes>
         </BrowserRouter>
     );
