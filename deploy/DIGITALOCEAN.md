@@ -16,7 +16,9 @@ Two apps (backend + frontend) from the same GitHub repo.
 2. App Platform runs **`web`** from **`Procfile`**: Gunicorn binds to **`$PORT`** (usually **8080** on DO). Set the component **HTTP port** to **8080** unless you override `PORT`.
 3. If deploy says **“No application module specified”**, the platform had no start command — the committed **`backend/Procfile`** fixes that.
 
-4. **Either path:** add **Managed MySQL** (or bind DB credentials). Set runtime env vars: `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=0`, `ALLOWED_HOSTS`, `MYSQL_*`, `CORS_ALLOWED_ORIGINS` (your frontend URL).
+4. **Database:** bind a **Dev Database** or **Managed Database** so App Platform injects **`DATABASE_URL`**. Django reads that when set (PostgreSQL via `psycopg`). For **Docker Compose** locally, leave `DATABASE_URL` unset and use **`MYSQL_*`** against the compose MySQL service.
+
+5. **First deploy on a new Postgres DB:** run migrations once (App Platform **Console** on the backend component: `python manage.py migrate`), or add a one-off Job. Set runtime env vars: `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=0`, `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS` (your frontend URL).
 
 **Note:** The Python buildpack used to fail if `venv/` was committed; it is now gitignored. Docker avoids buildpack quirks entirely.
 

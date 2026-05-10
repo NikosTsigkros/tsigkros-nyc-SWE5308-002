@@ -87,20 +87,35 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+#
+# App Platform / Heroku: bind a Dev DB or Managed DB and set DATABASE_URL (often PostgreSQL).
+# Docker Compose / local: leave DATABASE_URL unset and use MYSQL_* (MySQL).
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('MYSQL_DATABASE', 'inventory_db'),
-        'USER': os.environ.get('MYSQL_USER', 'root'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
-        'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
-        'PORT': os.environ.get('MYSQL_PORT', '3306'),
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
+_database_url = os.environ.get('DATABASE_URL', '').strip()
+if _database_url:
+    import dj_database_url
+
+    DATABASES = {
+        'default': dj_database_url.parse(
+            _database_url,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('MYSQL_DATABASE', 'inventory_db'),
+            'USER': os.environ.get('MYSQL_USER', 'root'),
+            'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
+            'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
+            'PORT': os.environ.get('MYSQL_PORT', '3306'),
+            'OPTIONS': {
+                'charset': 'utf8mb4',
+            },
+        }
+    }
 
 
 # Password validation
