@@ -94,6 +94,12 @@ function Login() {
                 <p className="mt-4 text-sm text-gray-600">
                     No account? <Link to="/register" className="text-blue-600 underline">Register here</Link>
                 </p>
+                <p className="mt-3 border-t border-gray-200 pt-3 text-xs text-gray-500">
+                    Demo user:{' '}
+                    <code className="rounded bg-gray-100 px-1 py-0.5 text-gray-800">nikos</code>{' '}
+                    /{' '}
+                    <code className="rounded bg-gray-100 px-1 py-0.5 text-gray-800">asdf1234</code>
+                </p>
             </div>
         </div>
     );

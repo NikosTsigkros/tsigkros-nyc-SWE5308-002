@@ -25,11 +25,19 @@ function Shell() {
     };
 
     return (
-        <div className="min-h-screen font-sans">
+        <div className="flex min-h-screen flex-col font-sans">
             <nav className="border-b border-gray-300 bg-white">
                 <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-2 px-4 py-3">
-                    <Link to="/" className="text-lg font-bold text-gray-800">
-                        Inventory app
+                    <Link
+                        to="/"
+                        className="flex flex-col items-start gap-0.5 no-underline hover:opacity-90"
+                    >
+                        <span className="text-lg font-bold leading-tight text-gray-800">
+                            Smart Inventory Manager
+                        </span>
+                        <span className="text-[11px] font-normal text-gray-500">
+                            Nikos Tsigkros - SWE5308 - New York College of Athens 2025-2026
+                        </span>
                     </Link>
                     <div className="flex flex-wrap items-center gap-4 text-sm">
                         <NavLink to="/" className={navLinkClass} end>
@@ -57,13 +65,29 @@ function Shell() {
                 </div>
             </nav>
 
-            <main className="mx-auto max-w-4xl px-4 py-6">
+            <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6">
                 <Routes>
                     <Route path="/" element={<Products />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                 </Routes>
             </main>
+
+            <footer className="mt-auto border-t border-gray-300 bg-gray-50 px-4 py-6 text-center text-sm text-gray-600">
+                <p className="font-semibold text-gray-800">Smart Inventory Manager</p>
+                <p className="mt-1 text-xs text-gray-500">
+                    SWE5308 — Cloud Technologies · New York College of Athens ·
+                    2025–2026
+                </p>
+                <p className="mx-auto mt-3 max-w-2xl text-xs leading-relaxed text-gray-500">
+                    Course assessment: a cloud-ready full stack app (React, Django REST
+                    Framework, JWT, MySQL) for inventory and product management.
+                </p>
+                <p className="mt-4 text-xs text-gray-500">
+                    Developed by{' '}
+                    <span className="font-medium text-gray-800">Nikos Tsigkros</span>
+                </p>
+            </footer>
         </div>
     );
 }
