@@ -30,6 +30,12 @@ The application allows authenticated users to manage inventory products through 
 
 ---
 
+## Deployment (DigitalOcean App Platform)
+
+Step-by-step notes for a **backend** Web Service (Dockerfile) and **frontend** Static Site or Web Service are in [deploy/DIGITALOCEAN.md](deploy/DIGITALOCEAN.md). The repository root [`.gitignore`](.gitignore) excludes `backend/venv/` so Python buildpacks do not fail; use the Dockerfile-based backend deploy for production.
+
+---
+
 ## Technologies Used
 
 ### Frontend
