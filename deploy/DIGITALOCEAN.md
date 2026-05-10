@@ -4,12 +4,21 @@ Two apps (backend + frontend) from the same GitHub repo.
 
 ## Backend (Web Service)
 
-1. **Source directory:** `backend`
-2. **Build strategy:** **Dockerfile** (not autodetect). Set Dockerfile path to `backend/Dockerfile` (or repo-relative `Dockerfile` if the UI resolves from `backend/`).
-3. **HTTP port:** `8000` (matches Gunicorn in `docker-entrypoint.sh`).
-4. Add **Managed MySQL** (or bind DB credentials). Set runtime env vars: `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=0`, `ALLOWED_HOSTS`, `MYSQL_*`, `CORS_ALLOWED_ORIGINS` (your frontend URL).
+### Option A — Dockerfile (recommended)
 
-**Why Dockerfile:** The Python buildpack fails if a committed `venv/` exists. The repo ignores `backend/venv/`; Docker builds use `.dockerignore` and never install from that folder.
+1. **Source directory:** `backend`
+2. **Build strategy:** **Dockerfile** → `backend/Dockerfile`
+3. **HTTP port:** `8000` (Gunicorn in `docker-entrypoint.sh`).
+
+### Option B — Python buildpack (autodetect)
+
+1. **Source directory:** `backend`
+2. App Platform runs **`web`** from **`Procfile`**: Gunicorn binds to **`$PORT`** (usually **8080** on DO). Set the component **HTTP port** to **8080** unless you override `PORT`.
+3. If deploy says **“No application module specified”**, the platform had no start command — the committed **`backend/Procfile`** fixes that.
+
+4. **Either path:** add **Managed MySQL** (or bind DB credentials). Set runtime env vars: `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=0`, `ALLOWED_HOSTS`, `MYSQL_*`, `CORS_ALLOWED_ORIGINS` (your frontend URL).
+
+**Note:** The Python buildpack used to fail if `venv/` was committed; it is now gitignored. Docker avoids buildpack quirks entirely.
 
 ## Frontend (choose one)
 
