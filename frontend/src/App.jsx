@@ -33,7 +33,7 @@ function Shell() {
                         className="flex flex-col items-start gap-0.5 no-underline hover:opacity-90"
                     >
                         <span className="text-lg font-bold leading-tight text-gray-800">
-                            Smart Inventory Manager
+                            Tsigkros Inventory Manager
                         </span>
                         <span className="text-[11px] font-normal text-gray-500">
                             Nikos Tsigkros - SWE5308 - New York College of Athens 2025-2026
@@ -74,7 +74,7 @@ function Shell() {
             </main>
 
             <footer className="mt-auto border-t border-gray-300 bg-gray-50 px-4 py-6 text-center text-sm text-gray-600">
-                <p className="font-semibold text-gray-800">Smart Inventory Manager</p>
+                <p className="font-semibold text-gray-800">Tsigkros Inventory Manager</p>
                 <p className="mt-1 text-xs text-gray-500">
                     SWE5308 — Cloud Technologies · New York College of Athens ·
                     2025–2026
