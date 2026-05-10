@@ -9,6 +9,7 @@ venv/
 .env
 .env.*
 *.sqlite3
+backend/staticfiles/
 .pytest_cache/
 .mypy_cache/
 
