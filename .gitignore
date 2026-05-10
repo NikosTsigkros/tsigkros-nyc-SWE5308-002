@@ -8,6 +8,7 @@ backend/venv/
 venv/
 .env
 .env.*
+!.env.production.example
 *.sqlite3
 backend/staticfiles/
 .pytest_cache/

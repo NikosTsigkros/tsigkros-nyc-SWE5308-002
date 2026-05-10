@@ -32,6 +32,29 @@ Two apps (backend + frontend) from the same GitHub repo.
 
 Set **`CORS_ALLOWED_ORIGINS`** on the backend to the static site origin (e.g. `https://your-frontend.ondigitalocean.app`).
 
+### Split frontend + API on two different `*.ondigitalocean.app` URLs
+
+Example:
+
+- Frontend: `https://goldfish-app-lg2im.ondigitalocean.app`
+- Backend: `https://seashell-app-a3feu.ondigitalocean.app`
+
+1. **Frontend (build-time env):** set **`VITE_API_URL`** to the API base URL, **including `/api`**:
+
+   `https://seashell-app-a3feu.ondigitalocean.app/api`
+
+   Then **rebuild** the frontend (App Platform → your static site / web service → **Force rebuild** or push a commit). Vite bakes this in at build time; changing it later requires a new build.
+
+2. **Backend (runtime env):** set **`CORS_ALLOWED_ORIGINS`** to your frontend origin (comma-separated if several):
+
+   `https://goldfish-app-lg2im.ondigitalocean.app`
+
+   Without this, the browser blocks the login `POST` with a CORS error.
+
+3. **Backend:** set **`ALLOWED_HOSTS`** to include your API hostname, e.g. `seashell-app-a3feu.ondigitalocean.app`.
+
+See also `frontend/.env.production.example`.
+
 ### Option B — Web Service + Node buildpack
 
 1. **Source directory:** `frontend`
