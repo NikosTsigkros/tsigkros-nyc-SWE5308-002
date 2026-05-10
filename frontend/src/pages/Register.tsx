@@ -4,7 +4,7 @@ import { isAxiosError } from 'axios';
 import api from '../api/axios';
 
 function formatApiError(err: unknown): string {
-    if (!isAxiosError(err)) return 'Something went wrong. Try again.';
+    if (!isAxiosError(err)) return 'Something went wrong.';
     const d = err.response?.data;
     if (typeof d === 'string') return d;
     if (d && typeof d === 'object') {
@@ -19,6 +19,9 @@ function formatApiError(err: unknown): string {
     }
     return err.message || 'Registration failed.';
 }
+
+const inputClass =
+    'mt-1 w-full border border-gray-400 rounded px-2 py-1.5 text-sm focus:border-blue-600 focus:outline-none';
 
 function Register() {
     const navigate = useNavigate();
@@ -51,32 +54,19 @@ function Register() {
     };
 
     return (
-        <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-md flex-col justify-center px-2">
-            <div className="rounded-2xl border border-slate-800/80 bg-slate-900/60 p-8 shadow-2xl shadow-black/40 backdrop-blur-sm">
-                <div className="mb-8 text-center">
-                    <h1 className="text-2xl font-semibold tracking-tight text-white">
-                        Create your account
-                    </h1>
-                    <p className="mt-2 text-sm text-slate-400">
-                        Start tracking products in one place
-                    </p>
-                </div>
+        <div className="mx-auto max-w-md">
+            <h1 className="mb-4 text-xl font-bold">Register</h1>
 
+            <div className="border border-gray-300 bg-white p-6">
                 {error ? (
-                    <div
-                        role="alert"
-                        className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
-                    >
+                    <p className="mb-4 rounded border border-red-300 bg-red-50 px-2 py-2 text-sm text-red-800">
                         {error}
-                    </div>
+                    </p>
                 ) : null}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label
-                            htmlFor="reg-username"
-                            className="mb-1.5 block text-left text-xs font-medium uppercase tracking-wide text-slate-400"
-                        >
+                        <label htmlFor="reg-username" className="text-sm font-medium">
                             Username
                         </label>
                         <input
@@ -85,15 +75,11 @@ function Register() {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
-                            className="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none ring-violet-500/40 transition placeholder:text-slate-600 focus:border-violet-500 focus:ring-2"
-                            placeholder="jane"
+                            className={inputClass}
                         />
                     </div>
                     <div>
-                        <label
-                            htmlFor="reg-email"
-                            className="mb-1.5 block text-left text-xs font-medium uppercase tracking-wide text-slate-400"
-                        >
+                        <label htmlFor="reg-email" className="text-sm font-medium">
                             Email
                         </label>
                         <input
@@ -103,15 +89,11 @@ function Register() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none ring-violet-500/40 transition placeholder:text-slate-600 focus:border-violet-500 focus:ring-2"
-                            placeholder="you@example.com"
+                            className={inputClass}
                         />
                     </div>
                     <div>
-                        <label
-                            htmlFor="reg-password"
-                            className="mb-1.5 block text-left text-xs font-medium uppercase tracking-wide text-slate-400"
-                        >
+                        <label htmlFor="reg-password" className="text-sm font-medium">
                             Password
                         </label>
                         <input
@@ -122,15 +104,11 @@ function Register() {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             minLength={8}
-                            className="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none ring-violet-500/40 transition placeholder:text-slate-600 focus:border-violet-500 focus:ring-2"
-                            placeholder="At least 8 characters"
+                            className={inputClass}
                         />
                     </div>
                     <div>
-                        <label
-                            htmlFor="reg-password2"
-                            className="mb-1.5 block text-left text-xs font-medium uppercase tracking-wide text-slate-400"
-                        >
+                        <label htmlFor="reg-password2" className="text-sm font-medium">
                             Confirm password
                         </label>
                         <input
@@ -140,28 +118,21 @@ function Register() {
                             value={password2}
                             onChange={(e) => setPassword2(e.target.value)}
                             required
-                            className="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none ring-violet-500/40 transition placeholder:text-slate-600 focus:border-violet-500 focus:ring-2"
-                            placeholder="Repeat password"
+                            className={inputClass}
                         />
                     </div>
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="mt-2 w-full rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-600/25 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
                     >
-                        {loading ? 'Creating account…' : 'Create account'}
+                        {loading ? 'Please wait...' : 'Create account'}
                     </button>
                 </form>
 
-                <p className="mt-8 text-center text-sm text-slate-500">
-                    Already have an account?{' '}
-                    <Link
-                        to="/login"
-                        className="font-medium text-violet-400 hover:text-violet-300"
-                    >
-                        Sign in
-                    </Link>
+                <p className="mt-4 text-sm text-gray-600">
+                    Already registered? <Link to="/login" className="text-blue-600 underline">Login</Link>
                 </p>
             </div>
         </div>

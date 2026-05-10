@@ -4,7 +4,7 @@ import { isAxiosError } from 'axios';
 import api from '../api/axios';
 
 function formatApiError(err: unknown): string {
-    if (!isAxiosError(err)) return 'Something went wrong. Try again.';
+    if (!isAxiosError(err)) return 'Something went wrong.';
     const d = err.response?.data;
     if (typeof d === 'string') return d;
     if (d && typeof d === 'object') {
@@ -15,6 +15,9 @@ function formatApiError(err: unknown): string {
     }
     return err.message || 'Login failed.';
 }
+
+const inputClass =
+    'mt-1 w-full border border-gray-400 rounded px-2 py-1.5 text-sm focus:border-blue-600 focus:outline-none';
 
 function Login() {
     const navigate = useNavigate();
@@ -40,32 +43,19 @@ function Login() {
     };
 
     return (
-        <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-md flex-col justify-center px-2">
-            <div className="rounded-2xl border border-slate-800/80 bg-slate-900/60 p-8 shadow-2xl shadow-black/40 backdrop-blur-sm">
-                <div className="mb-8 text-center">
-                    <h1 className="text-2xl font-semibold tracking-tight text-white">
-                        Welcome back
-                    </h1>
-                    <p className="mt-2 text-sm text-slate-400">
-                        Sign in to manage your inventory
-                    </p>
-                </div>
+        <div className="mx-auto max-w-md">
+            <h1 className="mb-4 text-xl font-bold">Login</h1>
 
+            <div className="border border-gray-300 bg-white p-6">
                 {error ? (
-                    <div
-                        role="alert"
-                        className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
-                    >
+                    <p className="mb-4 rounded border border-red-300 bg-red-50 px-2 py-2 text-sm text-red-800">
                         {error}
-                    </div>
+                    </p>
                 ) : null}
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label
-                            htmlFor="login-username"
-                            className="mb-1.5 block text-left text-xs font-medium uppercase tracking-wide text-slate-400"
-                        >
+                        <label htmlFor="login-username" className="text-sm font-medium">
                             Username
                         </label>
                         <input
@@ -74,15 +64,11 @@ function Login() {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
-                            className="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none ring-violet-500/40 transition placeholder:text-slate-600 focus:border-violet-500 focus:ring-2"
-                            placeholder="you"
+                            className={inputClass}
                         />
                     </div>
                     <div>
-                        <label
-                            htmlFor="login-password"
-                            className="mb-1.5 block text-left text-xs font-medium uppercase tracking-wide text-slate-400"
-                        >
+                        <label htmlFor="login-password" className="text-sm font-medium">
                             Password
                         </label>
                         <input
@@ -92,28 +78,21 @@ function Login() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none ring-violet-500/40 transition placeholder:text-slate-600 focus:border-violet-500 focus:ring-2"
-                            placeholder="••••••••"
+                            className={inputClass}
                         />
                     </div>
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-600/25 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
                     >
-                        {loading ? 'Signing in…' : 'Sign in'}
+                        {loading ? 'Please wait...' : 'Login'}
                     </button>
                 </form>
 
-                <p className="mt-8 text-center text-sm text-slate-500">
-                    No account?{' '}
-                    <Link
-                        to="/register"
-                        className="font-medium text-violet-400 hover:text-violet-300"
-                    >
-                        Create one
-                    </Link>
+                <p className="mt-4 text-sm text-gray-600">
+                    No account? <Link to="/register" className="text-blue-600 underline">Register here</Link>
                 </p>
             </div>
         </div>
